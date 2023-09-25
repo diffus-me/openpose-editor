@@ -136,7 +136,16 @@ def on_ui_tabs():
     json_output.click(None, None, None, _js="saveJSON")
     preset_save.click(savePreset, [dummy_component, dummy_component], [preset_list, preset], _js="savePreset")
     preset_load.click(None, preset, [width, height], _js="loadPreset")
-    preset_list.change(lambda selected: json.dumps(presets[selected]), preset_list, preset)
+    def dump_result(request: gr.Request, selected):
+        if isinstance(selected, list):
+            if len(selected) == 0:
+                selected = ""
+            else:
+                selected = selected[0]
+        if selected in presets:
+            return json.dumps(presets[selected])
+        return ""
+    preset_list.change(dump_result, preset_list, preset)
 
   return [(openpose_editor, "OpenPose Editor", "openpose_editor")]
 
