@@ -11,7 +11,7 @@ from modules import script_callbacks
 from modules.shared import opts
 from modules.paths import models_path
 
-from basicsr.utils.download_util import load_file_from_url
+# from basicsr.utils.download_util import load_file_from_url
 
 from scripts.openpose.body import Body
 
@@ -97,6 +97,7 @@ def on_ui_tabs():
       if body_estimation is None:
         model_path = os.path.join(models_path, "openpose", "body_pose_model.pth")
         if not os.path.isfile(model_path):
+          assert False, "Model 'body_pose_model.pth' not found, please download the model manually"
           body_model_path = "https://huggingface.co/lllyasviel/ControlNet/resolve/main/annotator/ckpts/body_pose_model.pth"
           load_file_from_url(body_model_path, model_dir=os.path.join(models_path, "openpose"))
         body_estimation = Body(model_path)
